@@ -1,3 +1,10 @@
 export enum RoutePath {
-  AUTH = "/auth",
+  SIGN_IN = "/sign-in",
+  SIGN_UP = "/sign-up",
+
+  TOURS = "/tours",
+  TOUR_CREATE = "/tours/create",
+  TOUR_DETAILS = "/tours/:id",
+
+  PROFILE = "/profile",
 }
