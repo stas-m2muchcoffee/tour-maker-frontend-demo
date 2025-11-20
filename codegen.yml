@@ -1,0 +1,22 @@
+overwrite: true
+schema: ${VITE_API_URL}/graphql
+documents: 'src/**/*.{ts,tsx}'
+config:
+  scalars:
+    DateTime: Date
+    CustomUpload: File
+ignoreNoDocuments: true
+generates:
+  src/graphql/__generated__/:
+    preset: 'client'
+    config:
+      maybeValue: T | undefined
+      addExplicitOverride: true
+      useTypeImports: true
+    plugins: []
+    presetConfig:
+      fragmentMasking: false
+      gqlTagName: 'gql'
+  schema.graphql:
+    plugins:
+      - 'schema-ast'
