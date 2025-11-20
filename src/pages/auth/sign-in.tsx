@@ -1,37 +1,17 @@
-import { useMutation } from "@apollo/client/react";
-import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 
-import {
-  SignInDocument,
-  type SignInInput,
-} from "../../graphql/__generated__/graphql";
-import { RoutePath } from "../../enums/route-path.enum.ts";
+import { type SignInInput } from "../../graphql/__generated__/graphql";
+import { useAuth } from "../../hooks/use-auth.ts";
 
 const SignInPage = () => {
-  const { register, handleSubmit, reset } = useForm<SignInInput>();
-  const [signIn] = useMutation(SignInDocument);
-  const navigate = useNavigate();
-
-  const onSubmit = async (data: SignInInput) => {
-    try {
-      const result = await signIn({ variables: { input: data } });
-      const token = result.data?.auth.signIn.token;
-      if (token) {
-        window.localStorage.setItem("token", token);
-        navigate(RoutePath.TOURS);
-      }
-      reset();
-    } catch (mutationError) {
-      console.error(mutationError);
-    }
-  };
+  const { register, handleSubmit } = useForm<SignInInput>();
+  const { signIn } = useAuth();
 
   return (
     <div className="py-10">
       <h1 className="text-3xl font-semibold mb-6">Sign in</h1>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(signIn)}
         className="flex flex-col gap-4 max-w-md"
       >
         <input

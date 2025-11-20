@@ -4,9 +4,10 @@ import { Navigate, createBrowserRouter } from "react-router";
 import { RoutePath } from "../enums/route-path.enum.ts";
 
 const AppLayout = lazy(() => import("../layouts/app-layout.tsx"));
+const PublicRoute = lazy(() => import("./public-route.tsx"));
 const SignInPage = lazy(() => import("../pages/auth/sign-in.tsx"));
 const SignUpPage = lazy(() => import("../pages/auth/sign-up.tsx"));
-const ProtectedRoute = lazy(() => import("./protected-route.tsx"));
+const PrivateRoute = lazy(() => import("./private-route.tsx"));
 const ToursListPage = lazy(() => import("../pages/tours/tours-list.tsx"));
 const CreateTourPage = lazy(() => import("../pages/tours/create-tour.tsx"));
 const TourDetailsPage = lazy(() => import("../pages/tours/tour-details.tsx"));
@@ -22,15 +23,24 @@ export const router = createBrowserRouter([
         element: <Navigate to={RoutePath.TOURS} replace />,
       },
       {
-        path: RoutePath.SIGN_IN,
-        element: <SignInPage />,
+        element: <PublicRoute />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to={RoutePath.SIGN_IN} replace />,
+          },
+          {
+            path: RoutePath.SIGN_IN,
+            element: <SignInPage />,
+          },
+          {
+            path: RoutePath.SIGN_UP,
+            element: <SignUpPage />,
+          },
+        ],
       },
       {
-        path: RoutePath.SIGN_UP,
-        element: <SignUpPage />,
-      },
-      {
-        element: <ProtectedRoute />,
+        element: <PrivateRoute />,
         children: [
           {
             path: RoutePath.TOURS,

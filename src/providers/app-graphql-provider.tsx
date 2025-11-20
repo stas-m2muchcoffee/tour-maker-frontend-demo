@@ -32,7 +32,6 @@ const getOperationType = (operation: ApolloLink.Operation) => {
 
 export const AppGraphqlProvider = ({ children }: PropsWithChildren) => {
   const { showLoader, hideLoader } = useLoader();
-  const token = null;
 
   const client = useMemo(() => {
     const httpUri = `${import.meta.env.VITE_API_URL}/graphql`;
@@ -42,12 +41,12 @@ export const AppGraphqlProvider = ({ children }: PropsWithChildren) => {
       uri: httpUri,
     });
 
-    const authLink = new SetContextLink((prevContext) => {
+    const authLink = new SetContextLink(({ headers }) => {
+      const token = localStorage.getItem("token");
       return {
-        ...prevContext,
         headers: {
-          ...prevContext.headers,
-          authorization: token ? `Bearer ${token}` : null,
+          ...headers,
+          authorization: token ? `Bearer ${token}` : "",
         },
       };
     });
@@ -57,9 +56,10 @@ export const AppGraphqlProvider = ({ children }: PropsWithChildren) => {
         url: wsUri,
         shouldRetry: () => true,
         keepAlive: 20_000,
-        ...(token
-          ? { connectionParams: () => ({ authorization: `Bearer ${token}` }) }
-          : {}),
+        connectionParams: () => {
+          const token = localStorage.getItem("token");
+          return token ? { authorization: `Bearer ${token}` } : {};
+        },
       })
     );
 
@@ -151,7 +151,7 @@ export const AppGraphqlProvider = ({ children }: PropsWithChildren) => {
       },
       link: ApolloLink.from([loadingLink, errorLink, splitLink]),
     });
-  }, [token, showLoader, hideLoader]);
+  }, [showLoader, hideLoader]);
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
