@@ -14,4 +14,5 @@ export type AppButtonProps = {
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   onClick?: (e: React.MouseEvent) => void;
   to?: string;
+  className?: string;
 };

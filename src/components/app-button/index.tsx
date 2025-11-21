@@ -22,6 +22,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
   onClick,
   type = "button",
   to,
+  className,
 }) => {
   const buttonContent = useMemo(
     () => (
@@ -41,9 +42,10 @@ export const AppButton: React.FC<AppButtonProps> = ({
       baseClasses,
       !!iconName && !text ? iconOnlyButtonClasses : textButtonClasses,
       colorClasses,
-      disabled ? disabledButtonClasses : enabledButtonClasses
+      disabled ? disabledButtonClasses : enabledButtonClasses,
+      className
     );
-  }, [color, fill, disabled, iconName, text]);
+  }, [color, fill, disabled, iconName, text, className]);
 
   return to ? (
     <Link className={buttonClasses} to={to}>
