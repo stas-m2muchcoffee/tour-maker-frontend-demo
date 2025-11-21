@@ -11,6 +11,9 @@ export type AuthContextType = {
   signIn: (input: SignInInput) => void;
   signUp: (input: SignUpInput) => void;
   logOut: () => void;
+  signInLoading: boolean;
+  signUpLoading: boolean;
+  logOutLoading: boolean;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(

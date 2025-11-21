@@ -18,17 +18,17 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const [signInMutation] = useMutation(SignInDocument, {
+  const [signInMutation, { loading: signInLoading }] = useMutation(SignInDocument, {
     onCompleted: (data) => {
       setTokenToStorage(data?.auth.signIn?.token);
     },
   });
-  const [signUpMutation] = useMutation(SignUpDocument, {
+  const [signUpMutation, { loading: signUpLoading }] = useMutation(SignUpDocument, {
     onCompleted: (data) => {
       setTokenToStorage(data?.auth.signUp?.token);
     },
   });
-  const [logOutMutation] = useMutation(LogOutDocument, {
+  const [logOutMutation, { loading: logOutLoading }] = useMutation(LogOutDocument, {
     onCompleted: () => {
       setTokenToStorage();
     },
@@ -56,6 +56,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       signIn: (input) => signInMutation({ variables: { input } }),
       signUp: (input) => signUpMutation({ variables: { input } }),
       logOut: logOutMutation,
+      signInLoading,
+      signUpLoading,
+      logOutLoading,
     }),
     [
       isInitialized,

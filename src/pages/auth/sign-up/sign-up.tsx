@@ -8,12 +8,12 @@ import { AppButton } from "../../../components/app-button/index.tsx";
 import { AppToggleGroup } from "../../../components/app-toggle-group/index.tsx";
 
 const SignUpPage = () => {
+  const { signUp, signUpLoading } = useAuth();
   const form = useForm<SignUpDto>({
     resolver: classValidatorResolver(SignUpDto),
+    disabled: signUpLoading,
   });
   const { handleSubmit } = form;
-
-  const { signUp } = useAuth();
 
   return (
     <div className="w-full min-h-dvh flex flex-col items-center justify-center">

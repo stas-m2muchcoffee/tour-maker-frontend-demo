@@ -7,7 +7,7 @@ import { AppButton } from "../app-button";
 import { RoutePath } from "../../enums/route-path.enum";
 
 export const AppHeader = () => {
-  const { logOut } = useAuth();
+  const { logOut, logOutLoading } = useAuth();
   const { pathname } = useLocation();
   const matches = useMatches();
 
@@ -34,7 +34,12 @@ export const AppHeader = () => {
             to={RoutePath.TOUR_CREATE}
           />
         )}
-        <AppButton fill="outline" iconName="log-out" onClick={logOut} />
+        <AppButton
+          fill="outline"
+          iconName="log-out"
+          onClick={logOut}
+          disabled={logOutLoading}
+        />
       </div>
     </header>
   );

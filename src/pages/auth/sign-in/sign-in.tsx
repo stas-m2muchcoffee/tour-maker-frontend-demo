@@ -7,12 +7,12 @@ import { SignInDto } from "./dtos.ts";
 import { AppButton } from "../../../components/app-button/index.tsx";
 
 const SignInPage = () => {
+  const { signIn, signInLoading } = useAuth();
   const form = useForm<SignInDto>({
     resolver: classValidatorResolver(SignInDto),
+    disabled: signInLoading,
   });
   const { handleSubmit } = form;
-
-  const { signIn } = useAuth();
 
   return (
     <div className="w-full min-h-dvh flex flex-col items-center justify-center">
@@ -37,7 +37,12 @@ const SignInPage = () => {
             type="password"
             placeholder="Enter your password"
           />
-          <AppButton type="submit" text="Sign in" iconName="log-in" />
+          <AppButton
+            type="submit"
+            text="Sign in"
+            iconName="log-in"
+            disabled={signInLoading}
+          />
         </form>
       </FormProvider>
       <p className="text-secondary flex items-center">
