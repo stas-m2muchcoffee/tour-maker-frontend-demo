@@ -42,12 +42,13 @@ const SignUpPage = () => {
             name="preferences"
             labelText="Preferences"
             options={[
-              "Cultural Heritage",
-              "Art",
-              "Architecture",
-              "Historical Sites",
-              "Nature",
+              { value: "cultural heritage", label: "Cultural Heritage" },
+              { value: "art", label: "Art" },
+              { value: "architecture", label: "Architecture" },
+              { value: "historical sites", label: "Historical Sites" },
+              { value: "nature", label: "Nature" },
             ]}
+            displayCustomValue
             customValuePlaceholder="Enter your own..."
           />
           <AppButton type="submit" text="Sign up" iconName="user-plus" />
