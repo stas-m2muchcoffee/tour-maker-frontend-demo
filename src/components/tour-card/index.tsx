@@ -7,7 +7,7 @@ import { RoutePath } from "../../enums/route-path.enum";
 export const TourCard: React.FC<TourCardProps> = ({ tour }) => {
   return (
     <Link
-      to={generatePath(RoutePath.TOUR_DETAILS, { id: tour.id })}
+      to={generatePath(RoutePath.TOUR, { id: tour.id })}
       className="bg-bg-primary border border-border-primary rounded-xl p-6 cursor-pointer transition-all duration-300 hover:bg-gray-100"
     >
       <div className="flex flex-col gap-3">

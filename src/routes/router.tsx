@@ -12,9 +12,7 @@ const ToursPage = lazy(() => import("../pages/tours/tours.tsx"));
 const CreateTourPage = lazy(
   () => import("../pages/create-tour/create-tour.tsx")
 );
-const TourDetailsPage = lazy(
-  () => import("../pages/tour-details/tour-details.tsx")
-);
+const TourPage = lazy(() => import("../pages/tour/tour.tsx"));
 const ProfilePage = lazy(() => import("../pages/profile/profile.tsx"));
 
 export const router = createBrowserRouter([
@@ -61,8 +59,8 @@ export const router = createBrowserRouter([
             },
           },
           {
-            path: RoutePath.TOUR_DETAILS,
-            element: <TourDetailsPage />,
+            path: RoutePath.TOUR,
+            element: <TourPage />,
             handle: {
               title: "Tour details",
             },

@@ -5,7 +5,7 @@ export enum RoutePath {
   HOME = "/",
   TOURS = "/tours",
   TOUR_CREATE = "/tours/create",
-  TOUR_DETAILS = "/tours/:id",
+  TOUR = "/tours/:id",
 
   PROFILE = "/profile",
 }
