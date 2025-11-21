@@ -1,6 +1,7 @@
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router";
+import { ToastContainer } from "react-toastify";
 
 import "./index.css";
 import { AppGraphqlProvider } from "./providers/app-graphql-provider.tsx";
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
             <RouterProvider router={router} />
           </Suspense>
           <AppLoader />
+          <ToastContainer position="top-center" />
         </AuthProvider>
       </AppGraphqlProvider>
     </LoaderProvider>

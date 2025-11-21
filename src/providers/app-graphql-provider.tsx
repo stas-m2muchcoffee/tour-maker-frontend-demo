@@ -17,8 +17,12 @@ import {
 } from "@apollo/client/errors";
 import { createClient } from "graphql-ws";
 import { map } from "rxjs";
+import { toast } from "react-toastify";
+import { head } from "lodash";
+import type { GraphQLFormattedError } from "graphql";
 
 import { useLoader } from "../hooks/use-loader";
+import { getToastApolloErrors } from "../utils/get-toast-apollo-errors";
 
 const getOperationType = (operation: ApolloLink.Operation) => {
   const definition = getMainDefinition(operation.query);
@@ -106,12 +110,22 @@ export const AppGraphqlProvider = ({ children }: PropsWithChildren) => {
 
     const errorLink = new ErrorLink(({ error }) => {
       if (CombinedGraphQLErrors.is(error)) {
+        const errorMessage = getToastApolloErrors(
+          head<GraphQLFormattedError>(error.errors)
+        );
+        toast.error(errorMessage);
+
         error.errors.forEach(({ message, locations, path }) =>
           console.log(
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
           )
         );
       } else if (CombinedProtocolErrors.is(error)) {
+        const errorMessage = getToastApolloErrors(
+          head<GraphQLFormattedError>(error.errors)
+        );
+        toast.error(errorMessage);
+
         error.errors.forEach(({ message, extensions }) =>
           console.log(
             `[Protocol error]: Message: ${message}, Extensions: ${JSON.stringify(
@@ -120,6 +134,7 @@ export const AppGraphqlProvider = ({ children }: PropsWithChildren) => {
           )
         );
       } else {
+        toast.error("Network error");
         console.error(`[Network error]: ${error}`);
       }
     });
