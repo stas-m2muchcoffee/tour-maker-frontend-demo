@@ -3,6 +3,8 @@ import { useCallback, useMemo } from "react";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { map } from "lodash";
 import { useMutation, useQuery } from "@apollo/client/react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 import { CreateTourDto } from "./dtos";
 import {
@@ -13,21 +15,25 @@ import {
 import { AppSelect } from "../../components/app-select";
 import { AppButton } from "../../components/app-button";
 import { AppToggleGroup } from "../../components/app-toggle-group";
+import { RoutePath } from "../../enums/route-path.enum";
 
 const CreateTourPage = () => {
+  const navigate = useNavigate();
   const { data: citiesData } = useQuery(GetCitiesDocument);
   const { data: categoriesData } = useQuery(GetCategoriesDocument);
+  const [createTourMutation] = useMutation(CreateTourDocument, {
+    onCompleted: () => {
+      toast.success(
+        "Tour creation process started successfully. You will be notified when it is ready."
+      );
+      navigate(RoutePath.TOURS);
+    },
+  });
 
   const form = useForm<CreateTourDto>({
     resolver: classValidatorResolver(CreateTourDto),
   });
-  const { handleSubmit, reset } = form;
-
-  const [createTourMutation] = useMutation(CreateTourDocument, {
-    onCompleted: () => {
-      reset();
-    },
-  });
+  const { handleSubmit } = form;
 
   const createTour = useCallback(
     (input: CreateTourDto) => {
