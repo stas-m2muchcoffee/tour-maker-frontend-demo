@@ -5,9 +5,7 @@ import { GetRecommendedToursDocument } from "../../../graphql/__generated__/grap
 import { TourCard } from "../../../components/tour-card";
 
 export const RecommendedToursSection = () => {
-  const { data, loading } = useQuery(GetRecommendedToursDocument);
-
-  if (loading) return null;
+  const { data } = useQuery(GetRecommendedToursDocument);
 
   return (
     <>
