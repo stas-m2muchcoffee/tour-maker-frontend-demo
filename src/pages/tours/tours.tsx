@@ -1,5 +1,11 @@
+import { RecommendedToursSection } from "./recommended-tours-section";
+
 const ToursPage = () => {
-  return <p>Tours list page</p>;
+  return (
+    <div>
+      <RecommendedToursSection />
+    </div>
+  );
 };
 
 export default ToursPage;
