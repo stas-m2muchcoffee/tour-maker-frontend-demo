@@ -5,8 +5,8 @@ import { RoutePath } from "../enums/route-path.enum.ts";
 
 const AppLayout = lazy(() => import("../layouts/app-layout.tsx"));
 const PublicRoute = lazy(() => import("./public-route.tsx"));
-const SignInPage = lazy(() => import("../pages/auth/sign-in.tsx"));
-const SignUpPage = lazy(() => import("../pages/auth/sign-up.tsx"));
+const SignInPage = lazy(() => import("../pages/auth/sign-in/sign-in.tsx"));
+const SignUpPage = lazy(() => import("../pages/auth/sign-up/sign-up.tsx"));
 const PrivateRoute = lazy(() => import("./private-route.tsx"));
 const ToursListPage = lazy(() => import("../pages/tours/tours-list.tsx"));
 const CreateTourPage = lazy(() => import("../pages/tours/create-tour.tsx"));
