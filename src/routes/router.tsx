@@ -8,9 +8,13 @@ const PublicRoute = lazy(() => import("./public-route.tsx"));
 const SignInPage = lazy(() => import("../pages/auth/sign-in/sign-in.tsx"));
 const SignUpPage = lazy(() => import("../pages/auth/sign-up/sign-up.tsx"));
 const PrivateRoute = lazy(() => import("./private-route.tsx"));
-const ToursListPage = lazy(() => import("../pages/tours/tours-list.tsx"));
-const CreateTourPage = lazy(() => import("../pages/tours/create-tour.tsx"));
-const TourDetailsPage = lazy(() => import("../pages/tours/tour-details.tsx"));
+const ToursPage = lazy(() => import("../pages/tours/tours.tsx"));
+const CreateTourPage = lazy(
+  () => import("../pages/create-tour/create-tour.tsx")
+);
+const TourDetailsPage = lazy(
+  () => import("../pages/tour-details/tour-details.tsx")
+);
 const ProfilePage = lazy(() => import("../pages/profile/profile.tsx"));
 
 export const router = createBrowserRouter([
@@ -44,19 +48,31 @@ export const router = createBrowserRouter([
         children: [
           {
             path: RoutePath.TOURS,
-            element: <ToursListPage />,
+            element: <ToursPage />,
+            handle: {
+              title: "Tours",
+            },
           },
           {
             path: RoutePath.TOUR_CREATE,
             element: <CreateTourPage />,
+            handle: {
+              title: "Create tour",
+            },
           },
           {
             path: RoutePath.TOUR_DETAILS,
             element: <TourDetailsPage />,
+            handle: {
+              title: "Tour details",
+            },
           },
           {
             path: RoutePath.PROFILE,
             element: <ProfilePage />,
+            handle: {
+              title: "Profile",
+            },
           },
         ],
       },
