@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { map } from "lodash";
 
 import { GetTourDocument } from "../../graphql/__generated__/graphql";
+import { TourMap } from "../../components/tour-map";
 
 const TourPage = () => {
   const { id } = useParams();
@@ -29,6 +30,8 @@ const TourPage = () => {
         ))}
       </div>
       <p className="text-secondary">{tour?.description}</p>
+
+      {!!tour && <TourMap tour={tour} />}
     </div>
   );
 };
