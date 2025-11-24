@@ -4,10 +4,14 @@ import { Navigate, createBrowserRouter } from "react-router";
 import { RoutePath } from "../enums/route-path.enum.ts";
 
 const AppLayout = lazy(() => import("../layouts/app-layout.tsx"));
-const PublicRoute = lazy(() => import("./public-route.tsx"));
+const PublicRouteLayout = lazy(
+  () => import("../layouts/public-route-layout.tsx")
+);
 const SignInPage = lazy(() => import("../pages/auth/sign-in/sign-in.tsx"));
 const SignUpPage = lazy(() => import("../pages/auth/sign-up/sign-up.tsx"));
-const PrivateRoute = lazy(() => import("./private-route.tsx"));
+const PrivateRouteLayout = lazy(
+  () => import("../layouts/private-route-layout.tsx")
+);
 const ToursPage = lazy(() => import("../pages/tours/tours.tsx"));
 const CreateTourPage = lazy(
   () => import("../pages/create-tour/create-tour.tsx")
@@ -25,7 +29,7 @@ export const router = createBrowserRouter([
         element: <Navigate to={RoutePath.TOURS} replace />,
       },
       {
-        element: <PublicRoute />,
+        element: <PublicRouteLayout />,
         children: [
           {
             index: true,
@@ -42,7 +46,7 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        element: <PrivateRoute />,
+        element: <PrivateRouteLayout />,
         children: [
           {
             path: RoutePath.TOURS,
