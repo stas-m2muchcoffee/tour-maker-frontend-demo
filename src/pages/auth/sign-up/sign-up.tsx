@@ -6,6 +6,7 @@ import { AppInput } from "../../../components/app-input/index.tsx";
 import { SignUpDto } from "./dtos.ts";
 import { AppButton } from "../../../components/app-button/index.tsx";
 import { AppToggleGroup } from "../../../components/app-toggle-group/index.tsx";
+import { userPreferenceOptions } from "../../../constants/user-preferences.ts";
 
 const SignUpPage = () => {
   const { signUp, signUpLoading } = useAuth();
@@ -41,13 +42,7 @@ const SignUpPage = () => {
           <AppToggleGroup
             name="preferences"
             labelText="Preferences"
-            options={[
-              { value: "cultural heritage", label: "Cultural Heritage" },
-              { value: "art", label: "Art" },
-              { value: "architecture", label: "Architecture" },
-              { value: "historical sites", label: "Historical Sites" },
-              { value: "nature", label: "Nature" },
-            ]}
+            options={userPreferenceOptions}
             displayCustomValue
             customValuePlaceholder="Enter your own..."
           />

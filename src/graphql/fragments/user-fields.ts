@@ -5,5 +5,6 @@ gql(`
     id
     email
     token
+    preferences
   }
 `);

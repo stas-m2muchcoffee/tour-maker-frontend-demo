@@ -13,6 +13,7 @@ export const AppHeader = () => {
 
   const isTourCreationPage = pathname === RoutePath.TOUR_CREATE;
   const isToursPage = pathname === RoutePath.TOURS;
+  const isProfilePage = pathname === RoutePath.PROFILE;
 
   const title = useMemo(() => {
     return get(last(matches), "handle.title", "Tour Maker");
@@ -32,6 +33,13 @@ export const AppHeader = () => {
             fill="outline"
             text="Create tour"
             to={RoutePath.TOUR_CREATE}
+          />
+        )}
+        {!isProfilePage && (
+          <AppButton
+            fill="outline"
+            iconName="user-round"
+            to={RoutePath.PROFILE}
           />
         )}
         <AppButton
