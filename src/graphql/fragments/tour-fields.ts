@@ -5,6 +5,7 @@ gql(`
     id
     title
     description
+    route
     city {
       ...CityFields
     }
