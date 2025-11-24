@@ -5,7 +5,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useMutation, useApolloClient } from "@apollo/client/react";
+import { useApolloClient, useMutation } from "@apollo/client/react";
 
 import {
   SignInDocument,
@@ -18,10 +18,6 @@ import { AuthContext, type AuthContextType } from "./auth-context";
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const apolloClient = useApolloClient();
-
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   const [signInMutation, { loading: signInLoading }] = useMutation(
     SignInDocument,
     {
@@ -38,8 +34,22 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       },
     }
   );
-  const [logOutMutation, { loading: logOutLoading }] =
-    useMutation(LogOutDocument);
+  const [logOutMutation, { loading: logOutLoading }] = useMutation(
+    LogOutDocument,
+    {
+      onCompleted: () => {
+        setTokenToStorage();
+        apolloClient.clearStore();
+      },
+      onError: () => {
+        setTokenToStorage();
+        apolloClient.clearStore();
+      },
+    }
+  );
+
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const setTokenToStorage = useCallback((token?: string | null) => {
     if (token) {
@@ -72,9 +82,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const logOut = useCallback(() => {
     logOutMutation();
-    setTokenToStorage();
-    apolloClient.resetStore();
-  }, [logOutMutation, apolloClient]);
+  }, [logOutMutation]);
 
   const value: AuthContextType = useMemo(
     () => ({
@@ -90,9 +98,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     [
       isInitialized,
       isAuthenticated,
-      signInMutation,
-      signUpMutation,
-      logOutMutation,
+      signIn,
+      signUp,
+      logOut,
+      signInLoading,
+      signUpLoading,
+      logOutLoading,
     ]
   );
 
