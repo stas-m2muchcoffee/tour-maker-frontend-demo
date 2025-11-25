@@ -4,6 +4,7 @@ import Map, {
   Source,
   type ViewState,
   type MapInstance,
+  Marker,
 } from "react-map-gl/mapbox";
 import { lineString } from "@turf/helpers";
 import type { LineString, FeatureCollection, Position } from "geojson";
@@ -68,6 +69,22 @@ export const TourMap: React.FC<TourMapProps> = ({ tour }) => {
         mapStyle="mapbox://styles/mapbox/streets-v12"
         mapboxAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
       >
+        {map(tour.tourStops, (tourStop, index) => (
+          <Marker
+            key={tourStop.id}
+            longitude={tourStop.location?.longitude}
+            latitude={tourStop.location?.latitude}
+          >
+            <div className="w-6 h-6 bg-primary text-white flex items-center justify-center rounded-full">
+              {index + 1}
+              {viewState?.zoom && viewState?.zoom > 15 && (
+                <span className="absolute -top-1 -translate-y-full left-1/2 -translate-x-1/2 text-xs text-white text-center text-nowrap bg-primary/70 rounded-full px-4 py-1">
+                  {tourStop.name}
+                </span>
+              )}
+            </div>
+          </Marker>
+        ))}
         {!!routeLineString && (
           <Source
             type="geojson"

@@ -21,12 +21,17 @@ export const AppHeader = () => {
 
   return (
     <header className="w-full flex items-center justify-between gap-4 border-b border-border-primary pb-1 mb-4">
-      <div className="flex items-center gap-1">
-        {!isToursPage && (
-          <AppButton fill="clear" iconName="arrow-left" to={RoutePath.HOME} />
-        )}
-        <h2 className="text-primary font-bold">{title}</h2>
-      </div>
+      {!isToursPage && (
+        <AppButton
+          fill="clear"
+          iconName="arrow-left"
+          to={RoutePath.HOME}
+          className="pl-0"
+        />
+      )}
+
+      <h2 className="text-primary font-bold">{title}</h2>
+
       <div className="flex items-center gap-1">
         {!isTourCreationPage && (
           <AppButton
