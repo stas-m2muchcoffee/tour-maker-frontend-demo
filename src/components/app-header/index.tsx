@@ -5,9 +5,11 @@ import { get, last } from "lodash";
 import { useAuth } from "../../hooks/use-auth";
 import { AppButton } from "../app-button";
 import { RoutePath } from "../../enums/route-path.enum";
+import { useTourCreation } from "../../hooks/use-tour-creation";
 
 export const AppHeader = () => {
   const { logOut, logOutLoading } = useAuth();
+  const { isTourCreationInProgress } = useTourCreation();
   const { pathname } = useLocation();
   const matches = useMatches();
 
@@ -20,7 +22,7 @@ export const AppHeader = () => {
   }, [matches]);
 
   return (
-    <header className="w-full flex items-center justify-between gap-4 border-b border-border-primary pb-1 mb-4">
+    <header className="relative w-full flex items-center justify-between gap-4 border-b border-border-primary pb-1 mb-4">
       {!isToursPage && (
         <AppButton
           fill="clear"
@@ -54,6 +56,12 @@ export const AppHeader = () => {
           disabled={logOutLoading}
         />
       </div>
+
+      {isTourCreationInProgress && (
+        <div className="absolute bottom-0 left-0 right-0 h-0.5">
+          <div className="h-full w-full rounded-full bg-primary animate-horizontal-loader" />
+        </div>
+      )}
     </header>
   );
 };
