@@ -18,6 +18,7 @@ import { AuthContext, type AuthContextType } from "./auth-context";
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const apolloClient = useApolloClient();
+
   const [signInMutation, { loading: signInLoading }] = useMutation(
     SignInDocument,
     {
@@ -48,8 +49,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   );
 
-  const [isInitialized, setIsInitialized] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = apolloClient.onClearStore(async () => {
+      setIsAuthenticated(false);
+    });
+    return () => unsubscribe();
+  }, [apolloClient]);
 
   const setTokenToStorage = useCallback((token?: string | null) => {
     if (token) {
@@ -58,7 +65,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       localStorage.removeItem("token");
     }
     setIsAuthenticated(!!token);
-    setIsInitialized(true);
   }, []);
 
   useEffect(() => {
@@ -86,7 +92,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const value: AuthContextType = useMemo(
     () => ({
-      isInitialized,
       isAuthenticated,
       signIn,
       signUp,
@@ -96,7 +101,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       logOutLoading,
     }),
     [
-      isInitialized,
       isAuthenticated,
       signIn,
       signUp,

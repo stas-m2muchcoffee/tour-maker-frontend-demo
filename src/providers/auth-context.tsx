@@ -6,7 +6,6 @@ import type {
 } from "../graphql/__generated__/graphql";
 
 export type AuthContextType = {
-  isInitialized: boolean;
   isAuthenticated: boolean;
   signIn: (input: SignInInput) => void;
   signUp: (input: SignUpInput) => void;

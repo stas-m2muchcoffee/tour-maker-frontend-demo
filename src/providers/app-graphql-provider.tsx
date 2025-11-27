@@ -18,7 +18,7 @@ import {
 import { createClient } from "graphql-ws";
 import { map } from "rxjs";
 import { toast } from "react-toastify";
-import { head } from "lodash";
+import { get, head } from "lodash";
 import type { GraphQLFormattedError } from "graphql";
 
 import { useLoader } from "../hooks/use-loader";
@@ -38,6 +38,7 @@ export const AppGraphqlProvider = ({ children }: PropsWithChildren) => {
   const { showLoader, hideLoader } = useLoader();
 
   const client = useMemo(() => {
+    let apolloClient: ApolloClient | null = null;
     const httpUri = `${import.meta.env.VITE_API_URL}/graphql`;
     const wsUri = `${import.meta.env.VITE_WS_API_URL}/graphql`;
 
@@ -109,37 +110,29 @@ export const AppGraphqlProvider = ({ children }: PropsWithChildren) => {
     );
 
     const errorLink = new ErrorLink(({ error }) => {
-      if (CombinedGraphQLErrors.is(error)) {
-        const errorMessage = getToastApolloErrors(
-          head<GraphQLFormattedError>(error.errors)
-        );
-        toast.error(errorMessage);
-
-        error.errors.forEach(({ message, locations, path }) =>
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-          )
-        );
-      } else if (CombinedProtocolErrors.is(error)) {
-        const errorMessage = getToastApolloErrors(
-          head<GraphQLFormattedError>(error.errors)
-        );
-        toast.error(errorMessage);
-
-        error.errors.forEach(({ message, extensions }) =>
-          console.log(
-            `[Protocol error]: Message: ${message}, Extensions: ${JSON.stringify(
-              extensions
-            )}`
-          )
-        );
-      } else {
-        toast.error("Network error");
-        console.error(`[Network error]: ${error}`);
+      switch (true) {
+        case CombinedGraphQLErrors.is(error) &&
+          get(error, "errors[0].extensions.code") === "UNAUTHENTICATED": {
+          localStorage.removeItem("token");
+          apolloClient?.clearStore();
+          break;
+        }
+        case CombinedGraphQLErrors.is(error) ||
+          CombinedProtocolErrors.is(error): {
+          const errorMessage = getToastApolloErrors(
+            head<GraphQLFormattedError>(error.errors)
+          );
+          toast.error(errorMessage);
+          break;
+        }
+        default: {
+          toast.error("Network error");
+          break;
+        }
       }
     });
 
-    return new ApolloClient({
+    apolloClient = new ApolloClient({
       cache: new InMemoryCache({
         dataIdFromObject(responseObject) {
           const queryRegex = /Query$/;
@@ -166,6 +159,8 @@ export const AppGraphqlProvider = ({ children }: PropsWithChildren) => {
       },
       link: ApolloLink.from([loadingLink, errorLink, splitLink]),
     });
+
+    return apolloClient;
   }, [showLoader, hideLoader]);
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
